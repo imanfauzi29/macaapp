@@ -1,0 +1,6 @@
+flutter_native_splash:
+  image: "assets/maca-logo-text.png"
+  color: "#ffffff"
+  ios: true
+  android: true
+  web: true
