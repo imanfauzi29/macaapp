@@ -26,7 +26,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   const Image(
-                    image: AssetImage("assets/maca-logo.png"),
+                    image: AssetImage("assets/maca-logo-text.png"),
                     height: 200,
                     width: 200,
                   ),

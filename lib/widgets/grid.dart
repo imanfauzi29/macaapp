@@ -8,7 +8,7 @@ Widget gridWidget(List data) {
       child: MasonryGridView.count(
           itemCount: data.length,
           crossAxisCount: 2,
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 5),
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
           itemBuilder: (BuildContext ctx, index) {
@@ -21,7 +21,7 @@ Widget gridWidget(List data) {
                           BorderRadius.vertical(top: Radius.circular(20))),
                   builder: (context) => Container(
                       padding: const EdgeInsets.all(20),
-                      height: MediaQuery.of(context).size.height * 0.75,
+                      height: MediaQuery.of(context).size.height * 0.95,
                       child: DetailScreen(
                         data: data,
                         index: index,

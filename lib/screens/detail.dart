@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:maca/screens/webView.dart';
@@ -13,7 +12,7 @@ import 'package:maca/widgets/appBar.dart';
 class DetailScreen extends StatefulWidget {
   final List data;
   final int index;
-  DetailScreen({Key? key, required this.data, required this.index})
+  const DetailScreen({Key? key, required this.data, required this.index})
       : super(key: key);
 
   @override
@@ -23,42 +22,51 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   SharedPref sharedPref = SharedPref();
   late List dataLoad = widget.data;
+  bool isFavorite = false;
 
   loadSharedPreferences() async {
     try {
-      List data = await sharedPref.read('favorite');
-      setState(() {
-        dataLoad = data;
-      });
-    } catch (e) {
-      Container();
-    }
-  }
-
-  saveSharedPreferences(data) async {
-    try {
-      List list = [];
-      List sf = await sharedPref.read('favorite');
-      bool isExist = sf.contains(data);
-
-      if (isExist) {
-        await sharedPref.remove(data);
-        log("MASUK SINI");
-      } else {
-        list.addAll(data);
-        await sharedPref.save('favorite', list);
-        SnackBar(content: Text('Berhasil menambahkan ke favorit'));
+      List data = await json.decode(sharedPref.read('favorite')) ?? [];
+      if (data.isNotEmpty) {
+        setState(() {
+          isFavorite = data.contains(dataLoad[widget.index]);
+        });
       }
     } catch (e) {
       Container();
     }
   }
 
+  saveSharedPreferences(data) async {
+    List dataLoad = json.decode(await sharedPref.read('favorite')) ?? [];
+
+    if (dataLoad.isNotEmpty) {
+      if (dataLoad.contains(data['title'])) {
+        dataLoad.remove(data);
+        setState(() {
+          isFavorite = false;
+        });
+      } else {
+        dataLoad.add(data);
+        setState(() {
+          isFavorite = true;
+        });
+        await sharedPref.write('favorite', json.encode(dataLoad));
+      }
+    }
+
+    // List list = [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
-          title: Container(), leading: const BackButton(), appBar: AppBar()),
+        title: Container(),
+        leading: const BackButton(),
+        appBar: AppBar(),
+        color: Colors.transparent,
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
@@ -87,7 +95,9 @@ class _DetailScreenState extends State<DetailScreen> {
                             style: const TextStyle(
                                 fontSize: 12.0, color: Colors.grey)),
                         IconButton(
-                          icon: const Icon(FontAwesome.bookmark_empty),
+                          icon: isFavorite
+                              ? const Icon(FontAwesome.bookmark)
+                              : const Icon(FontAwesome.bookmark_empty),
                           onPressed: () {
                             saveSharedPreferences(widget.data[widget.index]);
                           },

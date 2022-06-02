@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final Color color;
   final Widget title;
   final Widget leading;
   final AppBar appBar;
@@ -14,7 +15,8 @@ class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
       required this.leading,
       required this.appBar,
       this.actions,
-      this.scaffoldKey})
+      this.scaffoldKey,
+      required this.color})
       : super(key: key);
 
   @override
@@ -37,7 +39,7 @@ class _BaseAppBarState extends State<BaseAppBar> {
     return AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
         title: widget.title,
-        backgroundColor: Colors.white,
+        backgroundColor: widget.color,
         foregroundColor: Colors.black,
         shadowColor: Colors.transparent,
         leading: widget.leading,

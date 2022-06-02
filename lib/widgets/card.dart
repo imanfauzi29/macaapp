@@ -16,7 +16,7 @@ class CardWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           CachedNetworkImage(
-            imageUrl: data[index]['urlToImage'],
+            imageUrl: data[index]['urlToImage'] ?? 'assets/default-image.png',
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) =>
                 const Image(image: AssetImage('assets/default-image.png')),
@@ -35,8 +35,8 @@ class CardWidget extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: Wrap(
-                spacing: 20,
-                runSpacing: 20,
+                spacing: 10,
+                runSpacing: 10,
                 children: <Widget>[
                   Text(
                     "${data[index]['title']}",
@@ -64,11 +64,16 @@ class CardWidget extends StatelessWidget {
                                   fontSize: 12, color: Colors.grey),
                             ),
                           ),
-                          Text(
-                            "${data[index]['source']['name']}",
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.grey),
-                          ),
+                          SizedBox(
+                            width: 50.0,
+                            child: Text(
+                              "${data[index]['source']['name']}",
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          )
                         ],
                       )
                     ],

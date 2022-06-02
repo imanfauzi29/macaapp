@@ -3,6 +3,8 @@ import 'package:maca/screens/favorite.dart';
 import 'package:maca/screens/home.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }

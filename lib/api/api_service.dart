@@ -11,6 +11,7 @@ class ApiService {
   Future<List> getCurrentBreaking() async {
     final response = await client
         .get(Uri.parse("$baseUrl/top-headlines?country=us&apiKey=$apiKey"));
+
     if (response.statusCode == 200) {
       return json.decode(response.body)['articles'];
     } else {

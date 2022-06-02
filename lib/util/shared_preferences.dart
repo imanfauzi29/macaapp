@@ -6,7 +6,7 @@ class SharedPref {
     return prefs.getString(key);
   }
 
-  save(String key, value) async {
+  write(String key, value) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }

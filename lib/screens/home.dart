@@ -7,6 +7,8 @@ import 'package:maca/widgets/drawer.dart';
 import 'package:maca/widgets/grid.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -47,10 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                     icon: const Icon(FontAwesome5.bars)),
             appBar: AppBar(),
-            actions: _buildActions()),
+            actions: _buildActions(),
+            color: Colors.white),
         drawer: const DrawerWidget(),
         body: Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
