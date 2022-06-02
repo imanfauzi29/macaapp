@@ -40,8 +40,10 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
-        child: const Image(
-          image: AssetImage("assets/maca-logo-text.png"),
-        ));
+        child: const Padding(
+            padding: EdgeInsets.all(120),
+            child: Image(
+              image: AssetImage("assets/maca-logo-text.png"),
+            )));
   }
 }
