@@ -45,3 +45,9 @@ class Constants {
     ),
   );
 }
+
+class RIKeys {
+  static const rikeys1 = Key('__RIKEY1__');
+  static const rikeys2 = Key('__RIKEY2__');
+  static const rikeys3 = Key('__RIKEY3__');
+}

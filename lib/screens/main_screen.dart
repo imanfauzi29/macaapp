@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:maca/screens/favorite.dart';
 import 'package:maca/screens/home.dart';
@@ -10,24 +12,36 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Map<String, dynamic>> icons = [
-    {'icon': Icons.home, 'title': 'Home', 'page': 0},
-    {'icon': Icons.receipt, 'title': 'Add', 'page': 1},
-    {'icon': Icons.favorite, 'title': 'Favorite', 'page': 2},
-    {'icon': Icons.person, 'title': 'Profile', 'page': 3}
-  ];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Widget> _pages() {
     return [
-      HomeScreen(),
-      FavoriteScreen(),
+      HomeScreen(scaffoldKey: _scaffoldKey),
+      FavoriteScreen(
+        scaffoldKey: _scaffoldKey,
+      ),
     ];
   }
 
   @override
+  void initState() {
+    super.initState();
+    Timer(
+        const Duration(seconds: 3),
+        () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Scaffold(
+                      body: IndexedStack(children: _pages()),
+                    ))));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(children: _pages()),
-    );
+    return Container(
+        color: Colors.white,
+        child: const Image(
+          image: AssetImage("assets/maca-logo-text.png"),
+        ));
   }
 }

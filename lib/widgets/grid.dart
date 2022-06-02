@@ -11,6 +11,9 @@ Widget gridWidget(List data) {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 5),
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
+          physics: const ScrollPhysics(),
+          controller: ScrollController(),
+          shrinkWrap: true,
           itemBuilder: (BuildContext ctx, index) {
             return InkWell(
               onTap: () => showModalBottomSheet(

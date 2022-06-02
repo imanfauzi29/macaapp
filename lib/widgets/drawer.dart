@@ -3,15 +3,14 @@ import 'package:maca/screens/favorite.dart';
 import 'package:maca/screens/home.dart';
 
 class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const DrawerWidget({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   State<DrawerWidget> createState() => _DrawerWidgetState();
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,7 +30,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     width: 200,
                   ),
                   IconButton(
-                      onPressed: () => _scaffoldKey.currentState?.closeDrawer(),
+                      onPressed: () =>
+                          widget.scaffoldKey.currentState?.closeDrawer(),
                       icon: const Icon(Icons.close))
                 ],
               ),
@@ -41,20 +41,28 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: const Text('Home'),
             leading: const Icon(Icons.home),
             onTap: () {
-              Scaffold.of(context).openEndDrawer();
+              Scaffold.of(context).openDrawer();
               Navigator.of(context).pop(true);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomeScreen(
+                            scaffoldKey: widget.scaffoldKey,
+                          )));
             },
           ),
           ListTile(
             title: const Text('Favorite'),
             leading: const Icon(Icons.favorite),
             onTap: () {
-              Scaffold.of(context).openEndDrawer();
+              Scaffold.of(context).openDrawer();
               Navigator.of(context).pop(true);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FavoriteScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FavoriteScreen(
+                            scaffoldKey: widget.scaffoldKey,
+                          )));
             },
           ),
         ],

@@ -7,7 +7,8 @@ import 'package:maca/widgets/drawer.dart';
 import 'package:maca/widgets/grid.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const HomeScreen({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -25,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
   String _searchText = "";
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _searchQuery = TextEditingController();
 
   ApiService apiService = ApiService();
@@ -40,18 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
-        key: _scaffoldKey,
+        key: widget.scaffoldKey,
         appBar: BaseAppBar(
             title: _isSearching ? _buildSearchField() : const Text(""),
             leading: _isSearching
                 ? const BackButton()
                 : IconButton(
-                    onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                    onPressed: () =>
+                        widget.scaffoldKey.currentState!.openDrawer(),
                     icon: const Icon(FontAwesome5.bars)),
             appBar: AppBar(),
             actions: _buildActions(),
             color: Colors.white),
-        drawer: const DrawerWidget(),
+        drawer: DrawerWidget(
+          scaffoldKey: widget.scaffoldKey,
+        ),
         body: Container(
           margin: const EdgeInsets.all(5),
           child: Column(

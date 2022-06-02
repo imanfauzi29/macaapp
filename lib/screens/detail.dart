@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -25,37 +24,58 @@ class _DetailScreenState extends State<DetailScreen> {
   bool isFavorite = false;
 
   loadSharedPreferences() async {
-    try {
-      List data = await json.decode(sharedPref.read('favorite')) ?? [];
-      if (data.isNotEmpty) {
-        setState(() {
-          isFavorite = data.contains(dataLoad[widget.index]);
-        });
-      }
-    } catch (e) {
-      Container();
+    String data = await sharedPref.read('favorite');
+    if (data == null) {
+      data = jsonEncode([]);
     }
+    List<dynamic> dataList = jsonDecode(data);
+    // print(dataLoad[widget.index]);
+    return setState(
+      () => isFavorite = dataList
+          .where((map) => dataLoad[widget.index]['title'] == map['title'])
+          .isNotEmpty,
+    );
   }
 
   saveSharedPreferences(data) async {
-    List dataLoad = json.decode(await sharedPref.read('favorite')) ?? [];
+    String sfr = await sharedPref.read('favorite');
+    if (sfr == null) {
+      sfr = jsonEncode([]);
+    }
 
-    if (dataLoad.isNotEmpty) {
-      if (dataLoad.contains(data['title'])) {
-        dataLoad.remove(data);
+    List<dynamic> dataList = jsonDecode(sfr);
+
+    if (dataList.isNotEmpty) {
+      List dl = dataList.where((map) => data['title'] == map['title']).toList();
+      if (dl.isNotEmpty) {
+        dl.remove(data);
+        await sharedPref.remove('favorite');
         setState(() {
           isFavorite = false;
         });
       } else {
-        dataLoad.add(data);
+        dl.add(data);
+        await sharedPref.write('favorite', jsonEncode(dataList));
         setState(() {
           isFavorite = true;
         });
-        await sharedPref.write('favorite', json.encode(dataLoad));
       }
+    } else {
+      dataList.add(data);
+      await sharedPref.write('favorite', jsonEncode(dataList));
+      setState(() {
+        isFavorite = true;
+      });
     }
+    // List arr = [];
+    // arr.add(data);
+    // await sharedPref.write('favorite', jsonEncode(arr));
+  }
 
-    // List list = [];
+  @override
+  void initState() {
+    super.initState();
+    loadSharedPreferences();
   }
 
   @override
