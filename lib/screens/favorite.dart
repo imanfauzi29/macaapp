@@ -19,8 +19,12 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final GlobalKey<FormState> scaffoldKey = GlobalKey<FormState>();
   SharedPref sharedPref = SharedPref();
+
+  bool _isSearching = false;
+  String _searchText = "";
+  TextEditingController _searchQuery = TextEditingController();
 
   void initialization() async {
     // print(await sharedPref.read('favorite').runtimeType);
@@ -45,15 +49,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
-        key: RIKeys.rikeys1,
         resizeToAvoidBottomInset: false,
         appBar: BaseAppBar(
-          title: const Text(""),
-          leading: IconButton(
-              onPressed: () => widget.scaffoldKey.currentState?.openDrawer(),
-              icon: const Icon(FontAwesome5.bars)),
+          title: Container(),
+          leading: const BackButton(),
           appBar: AppBar(),
-          color: Colors.white,
+          color: Colors.transparent,
         ),
         drawer: DrawerWidget(
           scaffoldKey: widget.scaffoldKey,
@@ -76,5 +77,59 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             }),
       ),
     );
+  }
+
+  List<Widget> _buildActions() {
+    if (_isSearching) {
+      return <Widget>[
+        IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            if (_searchQuery.text.isEmpty) {
+              Navigator.pop(context);
+              return;
+            }
+            _clearSearchQuery();
+          },
+        ),
+      ];
+    }
+
+    return <Widget>[
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: _startSearch,
+      ),
+    ];
+  }
+
+  void _startSearch() {
+    ModalRoute.of(context)
+        ?.addLocalHistoryEntry(LocalHistoryEntry(onRemove: _stopSearching));
+
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void updateSearchQuery(String newQuery) {
+    setState(() {
+      _searchText = newQuery;
+    });
+  }
+
+  void _stopSearching() {
+    _clearSearchQuery();
+
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  void _clearSearchQuery() {
+    setState(() {
+      _searchQuery.clear();
+      updateSearchQuery("");
+    });
   }
 }

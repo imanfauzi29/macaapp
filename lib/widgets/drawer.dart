@@ -41,28 +41,24 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: const Text('Home'),
             leading: const Icon(Icons.home),
             onTap: () {
-              Scaffold.of(context).openDrawer();
               Navigator.of(context).pop(true);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                            scaffoldKey: widget.scaffoldKey,
-                          )));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                  scaffoldKey: widget.scaffoldKey,
+                ),
+              ));
             },
           ),
           ListTile(
             title: const Text('Favorite'),
             leading: const Icon(Icons.favorite),
             onTap: () {
-              Scaffold.of(context).openDrawer();
               Navigator.of(context).pop(true);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FavoriteScreen(
-                            scaffoldKey: widget.scaffoldKey,
-                          )));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => FavoriteScreen(
+                  scaffoldKey: widget.scaffoldKey,
+                ),
+              ));
             },
           ),
         ],

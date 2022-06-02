@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +131,10 @@ class _DetailScreenState extends State<DetailScreen> {
                   placeholder: (context, url) =>
                       const CircularProgressIndicator(),
                   errorWidget: (context, url, error) => const Image(
-                      image: AssetImage('assets/default-image.png')),
+                    image: AssetImage('assets/default-image.png'),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
                   imageBuilder: (context, imageProvider) => Container(
                     width: double.infinity,
                     height: 300.0,

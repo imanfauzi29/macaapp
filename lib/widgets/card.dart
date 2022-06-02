@@ -15,23 +15,31 @@ class CardWidget extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
-          CachedNetworkImage(
-            imageUrl: data[index]['urlToImage'] ?? 'assets/default-image.png',
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) =>
-                const Image(image: AssetImage('assets/default-image.png')),
-            imageBuilder: (context, imageProvider) => Container(
-              width: double.infinity,
-              height: 300.0,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                image: DecorationImage(
-                  image: imageProvider,
+          data[index]['urlToImage'] != null
+              ? CachedNetworkImage(
+                  imageUrl: data[index]['urlToImage'],
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Image(
+                    image: AssetImage('assets/default-image.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: double.infinity,
+                    height: 300.0,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                )
+              : const Image(
+                  image: AssetImage('assets/default-image.png'),
                   fit: BoxFit.cover,
                 ),
-              ),
-            ),
-          ),
           Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: Wrap(
